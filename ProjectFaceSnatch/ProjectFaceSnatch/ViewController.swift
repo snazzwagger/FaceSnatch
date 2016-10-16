@@ -14,7 +14,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     @IBOutlet weak var pickedImage: UIImageView!
     
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -25,17 +24,12 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Dispose of any resources that can be recreated.
     }
     
-    
-    
-    
-    
     @IBAction func saveButtonAction(_ sender: UIButton) {
         let imageData = UIImageJPEGRepresentation(pickedImage.image!, 0.6)
         let compressedJPEGImage = UIImage(data: imageData!)
         UIImageWriteToSavedPhotosAlbum(compressedJPEGImage!, nil, nil, nil)
         saveNotice()
     }
-    
 
     @IBAction func cameraButtonAction(_ sender: UIButton) {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera){
