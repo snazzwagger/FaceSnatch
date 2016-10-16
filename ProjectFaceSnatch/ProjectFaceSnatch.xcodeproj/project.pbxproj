@@ -193,6 +193,7 @@
 				TargetAttributes = {
 					3CD46B2E1DAED57100AC8377 = {
 						CreatedOnToolsVersion = 8.0;
+						DevelopmentTeam = 7R2B3VGL8X;
 						ProvisioningStyle = Automatic;
 					};
 					3CD46B421DAED57100AC8377 = {
@@ -412,6 +413,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 7R2B3VGL8X;
 				INFOPLIST_FILE = ProjectFaceSnatch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.ProjectFaceSnatch;
@@ -424,6 +426,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 7R2B3VGL8X;
 				INFOPLIST_FILE = ProjectFaceSnatch/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.example.ProjectFaceSnatch;
@@ -505,6 +508,7 @@
 				3CD46B591DAED57100AC8377 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3CD46B5A1DAED57100AC8377 /* Build configuration list for PBXNativeTarget "ProjectFaceSnatchTests" */ = {
 			isa = XCConfigurationList;
@@ -513,6 +517,7 @@
 				3CD46B5C1DAED57100AC8377 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3CD46B5D1DAED57100AC8377 /* Build configuration list for PBXNativeTarget "ProjectFaceSnatchUITests" */ = {
 			isa = XCConfigurationList;
@@ -521,6 +526,7 @@
 				3CD46B5F1DAED57100AC8377 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
