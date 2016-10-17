@@ -24,6 +24,10 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Dispose of any resources that can be recreated.
     }
     
+    @IBAction func searchButtonAction(_ sender: UIButton) {
+        
+    }
+    
     @IBAction func saveButtonAction(_ sender: UIButton) {
         let imageData = UIImageJPEGRepresentation(pickedImage.image!, 0.6)
         let compressedJPEGImage = UIImage(data: imageData!)
