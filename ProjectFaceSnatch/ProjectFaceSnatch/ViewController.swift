@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Foundation
 
 class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
@@ -25,14 +26,63 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func searchButtonAction(_ sender: UIButton) {
-        
+        let todoEndpoint: String = "http://jsonplaceholder.typicode.com/posts/1"
+        guard let url = NSURL(string: todoEndpoint) else {
+            print("Error: cannot create URL")
+            return
+        }
+        let urlRequest = NSURLRequest(url: url as URL)
+        let config = URLSessionConfiguration.default
+        let session = URLSession(configuration: config)
+        let task = session.dataTask(with: urlRequest as URLRequest) {
+            (data, response, error) in
+            guard error == nil
+            else {
+                print("error calling GET on /todos/1")
+                print(error)
+                return
+            }
+            
+            guard let responseData = data
+            else {
+                print("Error: did not receive data")
+                return
+            }
+            
+            do {
+                guard let todo = try JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as? [String: Any]
+                else {
+                    print("error trying to convert data to JSON")
+                    return
+                }
+                
+                print("The todo is: " + todo.description)
+                
+                guard let todoTitle = todo["title"] as? String
+                else {
+                    print("Could not get todo title from JSON")
+                    return
+                }
+                self.jsonSuccess(mes: todoTitle)
+            }
+            catch  {
+                print("error trying to convert data to JSON")
+                return
+            }
+        }
+        task.resume()
     }
     
     @IBAction func saveButtonAction(_ sender: UIButton) {
-        let imageData = UIImageJPEGRepresentation(pickedImage.image!, 0.6)
-        let compressedJPEGImage = UIImage(data: imageData!)
-        UIImageWriteToSavedPhotosAlbum(compressedJPEGImage!, nil, nil, nil)
-        saveNotice()
+        if (pickedImage.image == nil) {
+            failNotice()
+        }
+        else{
+            let imageData = UIImageJPEGRepresentation(pickedImage.image!, 0.6)
+            let compressedJPEGImage = UIImage(data: imageData!)
+            UIImageWriteToSavedPhotosAlbum(compressedJPEGImage!, nil, nil, nil)
+            saveNotice()
+        }
     }
 
     @IBAction func cameraButtonAction(_ sender: UIButton) {
@@ -62,6 +112,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func saveNotice() {
         let alertController = UIAlertController(title: "Imaged Saved", message: "Saved to Camera Roll!", preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(defaultAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func failNotice() {
+        let alertController = UIAlertController(title: "Error", message: "You need to select an image!", preferredStyle: .alert)
+        let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
+        alertController.addAction(defaultAction)
+        present(alertController, animated: true, completion: nil)
+    }
+    
+    func jsonSuccess(mes: String) {
+        let alertController = UIAlertController(title: "Success!!", message: "You have succeeded!!" + mes, preferredStyle: .alert)
         let defaultAction = UIAlertAction(title: "OK", style: .default, handler: nil)
         alertController.addAction(defaultAction)
         present(alertController, animated: true, completion: nil)
