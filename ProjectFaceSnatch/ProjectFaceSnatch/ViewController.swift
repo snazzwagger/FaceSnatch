@@ -130,6 +130,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         alertController.addAction(defaultAction)
         present(alertController, animated: true, completion: nil)
     }
+    
+    @IBAction func clearButtonAction(_ sender: UIButton) {
+        if (pickedImage.image != nil) {
+            pickedImage.image = nil
+        }
+        else {
+            return
+        }
+    }
+    
 
 }
 
