@@ -14,6 +14,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBOutlet weak var pickedImage: UIImageView!
     
+    weak var prepedImage : UIImage?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +40,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             guard error == nil
             else {
                 print("error calling GET on /todos/1")
-                print(error)
+                //print(error)
                 return
             }
             
