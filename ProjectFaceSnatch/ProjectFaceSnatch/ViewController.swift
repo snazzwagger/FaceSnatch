@@ -27,49 +27,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     @IBAction func searchButtonAction(_ sender: UIButton) {
-        let todoEndpoint: String = "http://jsonplaceholder.typicode.com/posts/1"
-        guard let url = NSURL(string: todoEndpoint) else {
-            print("Error: cannot create URL")
-            return
-        }
-        let urlRequest = NSURLRequest(url: url as URL)
-        let config = URLSessionConfiguration.default
-        let session = URLSession(configuration: config)
-        let task = session.dataTask(with: urlRequest as URLRequest) {
-            (data, response, error) in
-            guard error == nil
-            else {
-                print("error calling GET on /todos/1")
-                //print(error)
+        var request = URLRequest(url: URL(string: "http://10.99.8.150:5000/todo/api/v1.0/tasks")!)
+        request.httpMethod = "POST"
+        let postString = "title=Success&description=Kick Ass"
+        request.httpBody = postString.data(using: .utf8)
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                print("error=\(error)")
                 return
             }
             
-            guard let responseData = data
-            else {
-                print("Error: did not receive data")
-                return
+            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                print("response = \(response)")
             }
             
-            do {
-                guard let todo = try JSONSerialization.jsonObject(with: responseData, options: .allowFragments) as? [String: Any]
-                else {
-                    print("error trying to convert data to JSON")
-                    return
-                }
-                
-                print("The todo is: " + todo.description)
-                
-                guard let todoTitle = todo["title"] as? String
-                else {
-                    print("Could not get todo title from JSON")
-                    return
-                }
-                self.jsonSuccess(mes: todoTitle)
-            }
-            catch  {
-                print("error trying to convert data to JSON")
-                return
-            }
+            let responseString = String(data: data, encoding: .utf8)
+            print("responseString = \(responseString)")
         }
         task.resume()
     }
