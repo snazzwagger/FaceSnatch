@@ -26,10 +26,23 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         // Dispose of any resources that can be recreated.
     }
     
+    
     @IBAction func searchButtonAction(_ sender: UIButton) {
+        
+        let imageData = UIImageJPEGRepresentation(pickedImage.image!, 0.9)
+        let strBase64:String = imageData!.base64EncodedString(options: .lineLength64Characters)
+        let params = ["image":[ "content_type": "image/jpeg", "filename":"test.jpg", "file_data": strBase64]]
         var request = URLRequest(url: URL(string: "http://10.99.8.150:5000/todo/api/v1.0/tasks")!)
+        do{
+            try request.httpBody = JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions() )
+        }
+        catch{
+            print("didnt work")
+        }
         request.httpMethod = "POST"
-        let postString = "title=Success&description=Kick Ass"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        let postString = "{\"title\":\"Success\",\"description\":\" \"}"
+        print(postString)
         request.httpBody = postString.data(using: .utf8)
         let task = URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {                                                 // check for fundamental networking error
@@ -44,6 +57,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             
             let responseString = String(data: data, encoding: .utf8)
             print("responseString = \(responseString)")
+            print(request)
         }
         task.resume()
     }
