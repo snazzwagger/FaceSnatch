@@ -28,38 +28,42 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     
     @IBAction func searchButtonAction(_ sender: UIButton) {
-        
-        let imageData = UIImageJPEGRepresentation(pickedImage.image!, 0.9)
-        let strBase64:String = imageData!.base64EncodedString(options: .lineLength64Characters)
-        let params = ["image":[ "content_type": "image/jpeg", "filename":"test.jpg", "file_data": strBase64]]
-        var request = URLRequest(url: URL(string: "http://10.99.8.150:5000/todo/api/v1.0/tasks")!)
-        do{
-            try request.httpBody = JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions() )
+        if (pickedImage.image == nil) {
+            failNotice()
         }
-        catch{
-            print("didnt work")
-        }
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        let postString = "{\"title\":\"Success\",\"description\":\" \"}"
-        print(postString)
-        request.httpBody = postString.data(using: .utf8)
-        let task = URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {                                                 // check for fundamental networking error
-                print("error=\(error)")
-                return
+        else {
+            let imageData = UIImageJPEGRepresentation(pickedImage.image!, 0.9)
+            let strBase64:String = imageData!.base64EncodedString(options: .lineLength64Characters)
+            let params = ["image":[ "content_type": "image/jpeg", "filename":"test.jpg", "file_data": strBase64]]
+            var request = URLRequest(url: URL(string: "http://10.171.102.188:5000/todo/api/v1.0/tasks")!)
+            do{
+                try request.httpBody = JSONSerialization.data(withJSONObject: params, options: JSONSerialization.WritingOptions() )
             }
-            
-            if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
-                print("statusCode should be 200, but is \(httpStatus.statusCode)")
-                print("response = \(response)")
+            catch{
+                print("didnt work")
             }
-            
-            let responseString = String(data: data, encoding: .utf8)
-            print("responseString = \(responseString)")
-            print(request)
+            request.httpMethod = "POST"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            let postString = "{\"title\":\"Success\",\"description\":\" \"}"
+            print(postString)
+            request.httpBody = postString.data(using: .utf8)
+            let task = URLSession.shared.dataTask(with: request) { data, response, error in
+                guard let data = data, error == nil else {                                                 // check for fundamental networking error
+                    print("error=\(error)")
+                    return
+                }
+                
+                if let httpStatus = response as? HTTPURLResponse, httpStatus.statusCode != 200 {           // check for http errors
+                    print("statusCode should be 200, but is \(httpStatus.statusCode)")
+                    print("response = \(response)")
+                }
+                
+                let responseString = String(data: data, encoding: .utf8)
+                print("responseString = \(responseString)")
+                print(request)
+            }
+            task.resume()
         }
-        task.resume()
     }
     
     @IBAction func saveButtonAction(_ sender: UIButton) {
